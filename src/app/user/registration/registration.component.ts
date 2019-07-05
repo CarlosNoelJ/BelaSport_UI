@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/shared/user.service';
 
 @Component({
   selector: 'app-registration',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistrationComponent implements OnInit {
 
-  constructor() { }
+  constructor(public service: UserService) { }
 
   ngOnInit() {
+    this.service.formModel.reset();
   }
 
+  onSubmit() {
+    this.service.register().subscribe(
+      (res: any) => {
+          this.service.formModel.reset();
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
 }
