@@ -7,31 +7,39 @@
         </div>
     </div>
     <div class="col-md-6">
-        <form [formGroup]="services.formModel" autocomplete="off" (submit)="onSubmit()">
+        <form [formGroup]="service.formModel" autocomplete="off" (submit)="onSubmit()">
             <div class="form-group required">
                 <label>DNI</label>
-                <input class="form-control" formControlDni="DNI">
+                <input class="form-control" formControlName="dniHost">
+                <label class="text-danger" *ngIf="service.formModel.get('dniHost').touched && service.formModel.get('dniHost').errors?.required">this field can´t be empty</label>
             </div>
             <div class="form-group required">
                 <label>FirstName</label>
-                <input class="form-control" formControlDni="FirstName">
+                <input class="form-control" formControlName="nameHost">
+                <label class="text-danger" *ngIf="service.formModel.get('nameHost').touched && service.formModel.get('nameHost').errors?.required">this field can´t be empty</label>
             </div>
             <div class="form-group required">
                 <label>LastName</label>
-                <input class="form-control" formControlDni="LastName">
+                <input class="form-control" formControlName="lastNameHost">
+                <label class="text-danger" *ngIf="service.formModel.get('lastNameHost').touched && service.formModel.get('lastNameHost').errors?.required">this field can´t be empty</label>
             </div>
-            <div class="form-group required">
-                <label>Password</label>
-                <input class="form-control" formControlDni="Password">
-            </div>
-            <div class="form-group required">
-                <label>ConfirmPassword</label>
-                <input class="form-control" formControlDni="ConfirmPassword">
+            <div formGroupName="passwordHost">
+                <div class="form-group required">
+                    <label>Password</label>
+                    <input type="password" class="form-control" formControlName="Password">
+                    <label class="text-danger" *ngIf="service.formModel.get('passwordHost.Password').touched && service.formModel.get('passwordHost.Password').errors?.required">this field can´t be empty</label>
+                </div>
+                <div class="form-group required">
+                    <label>Confirm Password</label>
+                    <input type="password" class="form-control" formControlName="ConfirmPassword">
+                    <label class="text-danger" *ngIf="service.formModel.get('passwordHost.ConfirmPassword').touched && service.formModel.get('passwordHost.ConfirmPassword').errors?.required">this field can´t be empty</label>
+                    <label class="text-danger" *ngIf="service.formModel.get('passwordHost.ConfirmPassword').touched && service.formModel.get('passwordHost.ConfirmPassword').errors?.passwordMismatch">Confirm password does not match</label>
+                </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-8 offset-md-2">
-                    <button type="submit" class="btn btn-lg btn-block">
-                        Sign up
+                    <button type="submit" class="btn btn-lg btn-block" [disabled]="!service.formModel.valid">
+                        Sign Up
                     </button>
                 </div>
             </div>

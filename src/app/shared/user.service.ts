@@ -6,37 +6,39 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserService {
+  constructor(private fb: FormBuilder, private http: HttpClient) { }
   readonly BaseURI: string = 'https://localhost:5001/api';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) { }
-
   formModel = this.fb.group({
-    DNI: ['', Validators.required],
-    FirstName: ['', Validators.required] ,
-    LastName: ['', Validators.required] ,
-    Passwords: this.fb.group({
-      Password: ['', Validators.required] ,
+    dniHost: ['', Validators.required],
+    nameHost: ['', Validators.required],
+    lastNameHost: ['', Validators.required],
+    passwordHost: this.fb.group({
+      Password: ['', Validators.required],
       ConfirmPassword: ['', Validators.required]
-    }, { validators: this.conparePasswords})
+    }, { validator: this.comparePasswords })
   });
 
-  conparePasswords(fb: FormGroup) {
-    const confirmPasswordCtrl = fb.get('ConfirmPassword');
+  comparePasswords(fb: FormGroup) {
+    const confirmPwdCtrl = fb.get('ConfirmPassword');
 
-    if (fb.get('Password').value !== confirmPasswordCtrl.value) {
-      confirmPasswordCtrl.setErrors({ passwordMismatch: true});
-    } else {
-      confirmPasswordCtrl.setErrors(null);
+    if (confirmPwdCtrl.errors === null || 'passwordMismatch' in confirmPwdCtrl.errors) {
+      if (fb.get('Password').value !== confirmPwdCtrl.value) {
+        confirmPwdCtrl.setErrors({ passwordMismatch: true });
+      } else {
+        confirmPwdCtrl.setErrors(null);
+      }
     }
   }
 
   register() {
     const body = {
-      DNi: this.formModel.value.DNI,
-      FirstName: this.formModel.value.FirstName,
-      LastName: this.formModel.value.LastName,
-      Password: this.formModel.value.Password
+      dniHost: Number(this.formModel.value.dniHost),
+      nameHost: this.formModel.value.nameHost,
+      lastNameHost: this.formModel.value.lastNameHost,
+      passwordHost: this.formModel.value.passwordHost.Password
     };
+    console.log(body);
     return this.http.post(this.BaseURI + '/host', body);
   }
 }

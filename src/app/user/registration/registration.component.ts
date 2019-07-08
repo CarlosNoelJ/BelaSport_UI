@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/shared/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-registration',
@@ -17,7 +18,22 @@ export class RegistrationComponent implements OnInit {
   onSubmit() {
     this.service.register().subscribe(
       (res: any) => {
+        //if (res.succeeded) {
           this.service.formModel.reset();
+          //this.toastr.success('New Host created!', 'Registration successful');
+        //} 
+        // else {
+        //   res.errors.forEach(element => {
+        //     switch (element.errorCode) {
+        //       case 'NotEmptyValidator': --> viene desde el json de error del API.
+        //         this.toastr.error('')
+        //         break;
+        //       default:
+        //         this.toastr.error(element.description,'Registration failed.');
+        //         break;
+        //     }
+        //   });
+        // }
       },
       err => {
         console.log(err);
